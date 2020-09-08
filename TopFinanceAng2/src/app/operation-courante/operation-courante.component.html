@@ -1,0 +1,380 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Opération Courante</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Paramètres des Comptes</li>
+          <li class="breadcrumb-item active" aria-current="page">Opération Courante</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4">
+
+    <div class="card-body">
+      <form class="form-horizontal " (ngSubmit)="ChercherCompte(f)" #f="ngForm">
+
+        <div class="box-body">
+
+          <div class="form-group">
+            <div *ngIf="modeActive=='code'">
+              <div class="form-group row">
+                <label class="col-sm-1 col-form-label">Compte</label>
+                <div class="col-sm-5">
+                  <input type="text" name="code_compte" id="code_compte" class="form-control"[(ngModel)]="code_compte">
+
+                </div>
+                <div class="col-sm-1">
+                  <button type="submit" class="btn btn-danger btn-sm form-pill">OK</button>
+                </div>
+              </div>
+
+            </div>
+            <div *ngIf="modeActive=='nom'">
+              <div class="form-group row">
+                <label for="nom_compte" class="col-sm-1 col-form-label">
+                  Compte:
+                </label>
+                <div class="col-sm-5">
+                  <select id="nom_compte" name="nom_compte" [(ngModel)]="nom_compte" class="form-control " (change)=f.onSubmit(f.value)>
+                    <option *ngFor="let comptesNom of comptesNom" [ngValue]="comptesNom.code_compte"  >
+                      {{ comptesNom.client.nom_client}} -- {{ comptesNom.code_compte}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="modeActive=='nom'" >
+              <h5><strong>NumCompte: {{compteActive.code_compte}}&nbsp;&nbsp;
+                Solde: {{compteActive.solde | number: '.2'}}&nbsp; F CFA</strong></h5>
+            </div>
+            <div *ngIf="modeActive=='code'">
+              <h5><strong>Client: {{compteActive.client.nom_client}}&nbsp;&nbsp;
+                Solde: {{compteActive.solde | number: '.2'}}&nbsp; F CFA</strong></h5>
+            </div>
+
+          </div>
+        </div>
+
+      </form>
+      <div>
+        <div *ngIf="modeActive=='code'">
+          <button type="button" class="btn btn-outline-success form-pill" data-toggle="modal" data-target="#exampleModal">
+            Nouveau Modèle
+          </button>
+          <a (click)="onActiveNom()" class="btn btn-outline-info rounded-0">Activer la recherche par Nom</a>
+        </div>
+        <div *ngIf="modeActive=='nom'">
+          <button type="button" class="btn btn-outline-success form-pill" data-toggle="modal" data-target="#exampleModal">
+            Nouveau Modèle
+          </button>
+          <a (click)="onActiveCode()" class="btn btn-outline-info rounded-0">Activer la recherche par Numero de Compte</a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!--Affichage des données-->
+  <mat-form-field >
+    <input matInput [(ngModel)]="searchKey"  placeholder="Rechercher" autocomplete="off" (keyup)="applyFilter()" class="glyphicon glyphicon-search">
+    <button mat-button matSuffix class="glyphicon glyphicon-remove" *ngIf="searchKey" (click)="onSearchClear()"></button>
+
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="compte">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Compte</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.compte.code_compte}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="libelle_operation">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Libelle</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.libelle_operation}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="montant">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>montant</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.montant | number: '.2'}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="type_operation">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>type_operation</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.type_operation}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button (click)="onEdit(row.code_ope_cour)" class="btn btn-outline-success btn-sm form-pill" data-toggle="modal" data-target="#exampleModal">
+            Edit
+          </button>
+          <button (click)="onDelete(row.code_ope_cour)" class="btn btn-outline-danger btn-sm form-pill">
+            Supprimer
+          </button>
+
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          loading data ...
+        </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          No data.
+        </mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+      <!--<mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+      dataSource.data.length==0)}"></mat-footer-row>-->
+
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.length === 0)}"></mat-footer-row>
+
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+        <!--Pour nouveau compte-->
+        <div *ngIf="mode=='new-cpte'">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Nouvelle Opération courante</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="reactiveForm">
+              <div class="box-body">
+
+                <div class="form-group row">
+                  <label for="libelle_operation" class="col-sm-4 col-form-label">libelle_operation:</label>
+                  <div class="col-sm-8">
+                  <input type="text" name="libelle_operation" id="libelle_operation" formControlName="libelle_operation" class="form-control">
+                  <div *ngIf="reactiveForm.controls.libelle_operation.errors && (reactiveForm.controls.libelle_operation.touched || reactiveForm.controls.libelle_operation.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','libelle_operation')">
+                      libelleReglement est obligatoire.
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('pattern','libelle_operation')">
+                      Format incorrect
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('minLength','libelle_operation')">
+                      libelleReglement doit avoir au moins 3 caracteres
+                    </div>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="form-group row ">
+                  <label for="type_operation" class="col-sm-4 col-form-label">Type Operation</label>
+                  <div class="col-sm-8">
+                    <select name="type_operation" id="type_operation" formControlName="type_operation" class="form-control ">
+                      <option value="V">Versement</option>
+                      <option value="R">Retrait</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="mode" class="col-sm-4 col-form-label">Reglement</label>
+                  <div class="col-sm-8">
+                    <select name="mode" id="mode"  formControlName="mode" class="form-control ">
+                      <option *ngFor="let r of reglements" [ngValue]="r.id_reglement">
+                        {{ r.libelle_reglement}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="montant" class="col-sm-4 col-form-label">Montant:</label>
+                  <div class="col-sm-8">
+                  <input type="text" name="montant" id="montant" formControlName="montant" class="form-control">
+                  <div *ngIf="reactiveForm.controls.montant.errors && (reactiveForm.controls.montant.touched || reactiveForm.controls.montant.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','montant')">
+                      codeReglement est obligatoire.
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('pattern','montant')">
+                      Format incorrect
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('minLength','montant')">
+                      codeReglement doit avoir au moins 3 caracteres
+                    </div>
+                  </div>
+                  </div>
+                </div>
+
+                <!--<div class="form-group row ">
+                  <label class="col-sm-4 col-form-label">Comptabilisé:</label>
+                  <div class="col-sm-5">
+                    <input type="checkbox" value="true" formControlName="comptabilise">
+                  </div>
+                </div>-->
+
+                <div class="form-group row ">
+                  <label class="col-sm-4 col-form-label">Modèle actif:</label>
+                  <div class="col-sm-5">
+                    <input type="checkbox" value="true" formControlName="actif">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="motif" class="control-label">motif:</label>
+                  <textarea class="form-control z-depth-1" id="motif" rows="3" formControlName="motif" placeholder=""></textarea>
+
+                  <div *ngIf="reactiveForm.controls.motif.errors && (reactiveForm.controls.motif.touched || reactiveForm.controls.motif.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','motif')">
+                      motif est obligatoire.
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary" (click)="errorSuccess()">Annuler</button>
+
+                <button [disabled]="!reactiveForm.valid" type="submit" class="btn btn-primary" (click)="onSaveCompte(reactiveForm.value,compteActive.code_compte)">Enregistrer</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!--Pour l'edition-->
+        <div *ngIf="mode=='edit-cpte'">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modification Opération courante</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+          <form [formGroup]="reactiveForm">
+              <div class="box-body">
+              <div class="form-group">
+                  <input type="hidden" name="code_ope_cour" id="code_ope_cour" [(ngModel)]="currentCompte.code_ope_cour" formControlName="code_ope_cour" class="form-control" >
+                </div>
+
+                <div class="form-group row">
+                  <label for="libelle_operation" class="col-sm-4 col-form-label">libelle_operation:</label>
+                  <div class="col-sm-8">
+                  <input type="text" name="libelle_operation" id="libelle_operation" [(ngModel)]="currentCompte.libelle_operation" formControlName="libelle_operation" class="form-control">
+                  <div *ngIf="reactiveForm.controls.libelle_operation.errors && (reactiveForm.controls.libelle_operation.touched || reactiveForm.controls.libelle_operation.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','libelle_operation')">
+                      libelleReglement est obligatoire.
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('pattern','libelle_operation')">
+                      Format incorrect
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('minLength','libelle_operation')">
+                      libelleReglement doit avoir au moins 3 caracteres
+                    </div>
+                  </div>
+                  </div>
+                </div>
+
+                <div class="form-group row ">
+                  <label for="type_operation" class="col-sm-4 col-form-label">Type Operation</label>
+                  <div class="col-sm-8">
+                    <select name="type_operation" id="type_operation" [(ngModel)]="currentCompte.type_operation" formControlName="type_operation" class="form-control ">
+                      <option value="V">Versement</option>
+                      <option value="R">Retrait</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="mode" class="col-sm-4 col-form-label">Reglement</label>
+                  <div class="col-sm-8">
+                    <select name="mode" id="mode" [(ngModel)]="currentCompte.mode" formControlName="mode" class="form-control ">
+                      <option *ngFor="let r of reglements" [ngValue]="r.id_reglement">
+                        {{ r.libelle_reglement}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="montant" class="col-sm-4 col-form-label">Montant:</label>
+                  <div class="col-sm-8">
+                  <input type="text" name="montant" [(ngModel)]="currentCompte.montant" id="montant" formControlName="montant" class="form-control">
+                  <div *ngIf="reactiveForm.controls.montant.errors && (reactiveForm.controls.montant.touched || reactiveForm.controls.montant.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','montant')">
+                      codeReglement est obligatoire.
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('pattern','montant')">
+                      Format incorrect
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('minLength','montant')">
+                      codeReglement doit avoir au moins 3 caracteres
+                    </div>
+                  </div>
+                  </div>
+                </div>
+
+                <!--<div class="form-group row ">
+                  <label class="col-sm-4 col-form-label">Comptabilisé:</label>
+                  <div class="col-sm-5">
+                    <input type="checkbox" [(ngModel)]="currentCompte.comptabilise" value="true" formControlName="comptabilise">
+                  </div>
+                </div>-->
+
+                <div class="form-group row ">
+                  <label class="col-sm-4 col-form-label">Modèle actif:</label>
+                  <div class="col-sm-5">
+                    <input type="checkbox" [(ngModel)]="currentCompte.actif" value="true" formControlName="actif">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="motif" class="control-label">motif:</label>
+                  <textarea class="form-control z-depth-1" id="motif" rows="3" formControlName="motif" [(ngModel)]="currentCompte.motif" placeholder=""></textarea>
+
+                  <div *ngIf="reactiveForm.controls.motif.errors && (reactiveForm.controls.motif.touched || reactiveForm.controls.motif.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','motif')">
+                      motif est obligatoire.
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="modal-footer">
+                <button type="reset" class="btn btn-secondary" (click)="errorSuccess()">Annuler</button>
+
+                <button [disabled]="!reactiveForm.valid" type="submit" class="btn btn-primary" (click)="onSaveCompte(reactiveForm.value,compteActive.code_compte)">Enregistrer</button>
+              </div>
+            </form>
+
+          </div>
+
+        </div>
+        <!--Fin edition-->
+      </div>
+    </div>
+  </div>
+
+  <!--fin modal-->
+
+</div>

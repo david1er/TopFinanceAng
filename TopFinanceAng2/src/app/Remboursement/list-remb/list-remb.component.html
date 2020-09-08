@@ -1,0 +1,125 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Rembourssements</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item"><a routerLink="/list_emprunts">Emprunts</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Rembourssements</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4">
+    <div class="card-body">
+
+  <form class="form-horizontal " (ngSubmit)="ChercherCompte(f)" #f="ngForm">
+
+    <div class="box-body">
+      <div class="form-group ">
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label" for="code_pret">
+            Numéro du Pret:
+          </label>
+          <div class="col-sm-4">
+            <input type="text" id="code_pret" class="form-control" name="code_pret" [(ngModel)]="code_pret">
+          </div>
+
+          <div class="col-sm-1">
+            <button type="submit" class="btn btn-danger btn-sm form-pill">OK</button>
+          </div>
+
+          <!--Si c'est soldée-->
+          <div *ngIf="soldee=='oui'" class="col-md-4" style="margin-top: -20px">
+            <img class="rounded-circle" src="assets/img/soldee1.jpg" width="100" height="100" alt=""/>
+          </div>
+
+          <div *ngIf="soldee=='oui'" style="margin-top: -0px">
+            <h5><strong>NumCompte: {{pretActive.compte.code_compte}}&nbsp;&nbsp;
+              Reste à payer: {{pretActive.reste}}&nbsp; F CFA</strong></h5>
+          </div>
+          <!-- Fin Si c'est soldée-->
+        </div>
+
+        <div *ngIf="soldee=='non'">
+          <h5><strong>NumCompte: {{pretActive.compte.code_compte}}&nbsp;&nbsp;
+            Reste à payer: {{pretActive.reste}}&nbsp; F CFA</strong></h5>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+  <div>
+    <a routerLink="/new_remb" class="btn btn-outline-success rounded-0">Nouveau Remboursement</a>&nbsp;&nbsp;&nbsp;
+  </div> </div>
+
+
+</div>
+
+<mat-form-field >
+  <input matInput [(ngModel)]="searchKey"  placeholder="Rechercher" autocomplete="off" (keyup)="applyFilter()" class="glyphicon glyphicon-search">
+  <button mat-button matSuffix class="glyphicon glyphicon-remove" *ngIf="searchKey" (click)="onSearchClear()"></button>
+
+</mat-form-field>
+<div class="mat-elevation-z8">
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="date_remb">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.date_remb | date: 'dd/MM/yyyy'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="montant_remb">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Montant_remb</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.montant_remb}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="total_remb">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>total_remb</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.total_remb}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reste_a_remb">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>reste_a_remb</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.reste_a_remb}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button color="primary" class="glyphicon glyphicon-edit"></button>
+        <button mat-icon-button color="warn" class="glyphicon glyphicon-remove"></button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Données en cour de Chargement ...
+      </mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Pas de données.
+      </mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+    <!--<mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.data.length==0)}"></mat-footer-row>-->
+
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.length === 0)}"></mat-footer-row>
+
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+</div>

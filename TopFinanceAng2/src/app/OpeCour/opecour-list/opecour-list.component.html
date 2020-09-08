@@ -1,0 +1,67 @@
+<div class="search-div">
+  <button mat-raised-button class="glyphicon glyphicon-plus" (click)="onCreate()">
+    Nouveau
+  </button>
+  <mat-form-field class="search-form-field" >
+    <input matInput [(ngModel)]="searchKey"  placeholder="Search" autocomplete="off" (keyup)="applyFilter()" class="glyphicon glyphicon-search">
+    <button mat-button matSuffix class="glyphicon glyphicon-remove" *ngIf="searchKey" (click)="onSearchClear()"></button>
+
+  </mat-form-field>
+</div>
+
+<div class="mat-elevation-z8">
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="code_ope_cour">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>code_ope_cour</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.code_ope_cour}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="libelle_operation">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>libelle_operation</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.libelle_operation}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type_operation">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>type_operation</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.type_operation}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actif">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>actif</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.actif}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-icon-button color="primary" (click)="onEdit(row)" class="glyphicon glyphicon-edit"></button>
+        <button mat-icon-button color="warn" (click)="onDelete(row.code_ope_cour)" class="glyphicon glyphicon-remove"></button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Données en cours de chargement ...
+      </mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Pas de données.
+      </mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+    <!--<mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.data.length==0)}"></mat-footer-row>-->
+
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.length === 0)}"></mat-footer-row>
+
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+

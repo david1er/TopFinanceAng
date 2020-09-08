@@ -1,0 +1,77 @@
+<mat-toolbar>
+  <span>{{getForm().controls['code_ope_cour'].value?"Modifier Employé":"Nouveau Employé"}}</span>
+  <button class="glyphicon glyphicon-remove-circle " style="text-align: center" mat-stroked-button (click)="onClose()" tabIndex="-1"></button>
+</mat-toolbar>
+<form [formGroup]="getForm()" class="normal-form">
+  <mat-grid-list cols="2" rowHeight="300px">
+    <mat-grid-tile>
+      <div class="controles-container">
+        <input type="hidden" formControlName="code_ope_cour">
+
+        <mat-form-field>
+          <input formControlName="libelle_operation" matInput placeholder="libelle_operation ">
+          <mat-error> This field is mandatory</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="type_operation" matInput placeholder="type_operation ">
+          <mat-error> Invalid email address</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input formControlName="montant" matInput placeholder="montant ">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+
+        <mat-form-field>
+          <mat-select formControlName="mode" placeholder="mode de reglement">
+            <mat-option>Aucun</mat-option>
+            <ng-container>
+              <mat-option *ngFor="let mode of reglements" [value]="mode.id_reglement">
+                {{mode.libelle_reglement}}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <!--
+              <div class="col-sm-3">
+                <select name="mode" id="mode" formControlName="mode" class="form-control ">
+                  <option *ngFor="let r of reglements" [ngValue]="r.id_reglement">
+                    {{ r.libelle_reglement}}
+                  </option>
+                </select>
+              </div>
+
+               <select name="mode" id="mode" formControlName="mode" class="form-control ">
+                <option *ngFor="let r of reglements" [ngValue]="r.id_reglement">
+                  {{ r.libelle_reglement}}
+                </option>
+              </select> -->
+        <div class="add-bottom-padding">
+          <mat-checkbox formControlName="comptabilise"> Comptabilisé</mat-checkbox>
+        </div>
+
+        <div class="add-bottom-padding">
+          <mat-checkbox formControlName="actif"> Modele Actif</mat-checkbox>
+        </div>
+
+        <mat-form-field >
+          <mat-label>Commentaire</mat-label>
+          <textarea matInput placeholder="Ex. Versement sur Compte" formControlName="motif"></textarea>
+        </mat-form-field>
+
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit" [disabled]="getForm().invalid" (click)="onSaveEmployee(getForm().value)">Submit</button>
+          <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+        </div>
+      </div>
+
+    </mat-grid-tile>
+  </mat-grid-list>
+
+</form>

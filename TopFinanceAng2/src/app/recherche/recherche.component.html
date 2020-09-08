@@ -1,0 +1,217 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Recherche Multi-critère</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Analyses</li>
+          <li class="breadcrumb-item active" aria-current="page">Recherche Multi-critère</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-warning">
+        <div class="custom-title">Recherche Multi-critère</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="reactiveForm">
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Libelle Opération</label>
+          <div class="col-sm-3">
+            <select name="choix_libelle_operation" formControlName="choix_libelle_operation" class="form-control">
+              <option value="indifferent" selected>Indifférent</option>
+              <option value="contient">Contient</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <input type="text" name="libelle_operation" id="libelle_operation" formControlName="libelle_operation" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Motif</label>
+          <div class="col-sm-3">
+            <select name="choix_motif" formControlName="choix_motif" class="form-control">
+              <option value="indifferent" selected>Indifférent</option>
+              <option value="contient">Contient</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <input type="text" name="motif" id="motif" formControlName="motif" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Employé</label>
+          <div class="col-sm-3">
+            <select name="choix_employe" formControlName="choix_employe" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Egale</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <input type="text" name="employe" id="employe" formControlName="employe" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Compte</label>
+          <div class="col-sm-3">
+            <select name="choix_compte" formControlName="choix_compte" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Egale</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <input type="text" name="compte" id="compte" formControlName="compte" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Reglement</label>
+          <div class="col-sm-3">
+            <select name="choix_reglement" formControlName="choix_reglement" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Egale</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <select name="reglement" id="reglement"  formControlName="reglement" class="form-control ">
+              <option *ngFor="let r of reglements" [ngValue]="r.id_reglement">
+                {{ r.libelle_reglement}}
+              </option>
+            </select>
+            <!--<input type="text" name="reglement" id="reglement" formControlName="reglement" class="form-control">-->
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Sens Opération</label>
+          <div class="col-sm-3">
+            <select name="choix_type_operation" formControlName="choix_type_operation" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Egale</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <select name="type_operation" formControlName="type_operation" class="form-control">
+              <option value="V">Versement</option>
+              <option value="R">Retrait</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Montant</label>
+          <div class="col-sm-3">
+            <select name="choix_montant" formControlName="choix_montant" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Egale</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <input type="text" name="montant" id="montant" formControlName="montant" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Comptabilisé</label>
+          <div class="col-sm-3">
+            <select name="choix_comptabilise" formControlName="choix_comptabilise" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Egale</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <select name="comptabilise" formControlName="comptabilise" class="form-control">
+              <option value="1">Oui</option>
+              <option value="0">Non</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Date Opération</label>
+          <div class="col-sm-3">
+            <input type="date" name="dateOpDeb" id="dateOpDeb" formControlName="dateOpDeb" class="form-control">
+          </div>
+Au
+          <div class="col-sm-3">
+            <input type="date" name="dateOpFin" id="dateOpFin" formControlName="dateOpFin" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Date Valeur</label>
+          <div class="col-sm-3">
+            <input type="date" name="dateValDeb" id="dateValDeb" formControlName="dateValDeb" class="form-control">
+          </div>
+          Au
+          <div class="col-sm-3">
+            <input type="date" name="dateValFin" id="dateValFin" formControlName="dateValFin" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-12 text-center">
+            <button type="reset" (click)="errorSuccess()" class="btn btn-outline-warning form-pill" >Annuler</button>
+            <button type="submit" [disabled]="!reactiveForm.valid" class="btn btn-outline-primary form-pill" (click)="onRechercher(reactiveForm.value)">Valider</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!--Affichage des données-->
+  <div class="row" *ngIf="mode=='result'">
+    <div class=" col-md-11 col-sm-11 col-xs-12">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Recherche MultiCritère</h3>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="example" class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th>Numero Compte</th>
+              <th>Date Op.</th>
+              <th>Libelle</th>
+              <th>Sens</th>
+              <th>Montant</th>
+              <th>Employe</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let c of reponses">
+              <td>{{c.compte.code_compte}}</td>
+              <td>{{c.date_operation | date: 'dd/MM/yyyy'}}</td>
+              <td>{{c.libelle_operation}}</td>
+              <td>{{c.type_operation}}</td>
+              <td>{{ c.montant }}</td>
+              <td>{{c.employe }}</td>
+
+
+            </tr>
+            </tbody>
+
+          </table>
+        </div>
+        <!-- /.box-body -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+

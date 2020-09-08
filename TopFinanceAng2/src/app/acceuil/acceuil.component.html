@@ -1,0 +1,133 @@
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-xl-3 col-sm-6">
+      <div class="card card-shadow mb-4">
+        <div class="card-body">
+          <div class="media d-flex align-items-center ">
+            <div class="mr-4 rounded-circle bg-warning sr-icon-box ">
+              <i class="vl_user-male"></i>
+            </div>
+            <div class="media-body">
+              <h4 class="text-uppercase mb-0 weight500">{{nbreClients}}</h4>
+              <span class="text-muted">Nombres de Clients</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <div class="card card-shadow mb-4">
+        <div class="card-body">
+          <div class="media d-flex align-items-center">
+            <div class="mr-4 rounded-circle bg-success sr-icon-box ">
+              <i class="vl_download"></i>
+            </div>
+            <div class="media-body">
+              <h4 class="text-uppercase mb-0 weight500">{{nbreCpteEp}}</h4>
+              <span class="text-muted">Nombre de Compte Epargne</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <div class="card card-shadow mb-4">
+        <div class="card-body">
+          <div class="media d-flex align-items-center">
+            <div class="mr-4 rounded-circle bg-danger sr-icon-box ">
+              <i class="vl_shopping-bag2"></i>
+            </div>
+            <div class="media-body">
+              <h4 class="text-uppercase mb-0 weight500">{{nbreCpteEm}}</h4>
+              <span class="text-muted">Nombre de Compte Emprunt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-sm-6">
+      <div class="card card-shadow mb-4">
+        <div class="card-body">
+          <div class="media d-flex align-items-center">
+            <div class="mr-4 rounded-circle bg-primary sr-icon-box ">
+              <i class="fa fa-user-o"></i>
+            </div>
+            <div class="media-body">
+              <h4 class="text-uppercase mb-0 weight500">{{nbreUtilisateurs}}</h4>
+              <span class="text-muted">Nombre utilisateurs</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-shadow mb-4">
+        <div class="card-header border-0">
+          <div class="custom-title-wrap bar-turquoise">
+            <div class="custom-title">Epargne et Crédit Zion le {{date| date: 'longDate'}} Il est {{date| date: 'shortTime'}}</div>
+
+            <div class=" widget-action-link">
+              <div class="dropdown">
+                <a href="#" class="btn btn-transparent text-secondary dropdown-hover p-0" data-toggle="dropdown">
+                  <i class=" vl_ellipsis-fill-h"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right vl-dropdown">
+                  <a class="dropdown-item" href="#"> Edit</a>
+                  <a class="dropdown-item" href="#"> Delete</a>
+                  <a class="dropdown-item" href="#"> Settings</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-xl-5 col-md-5">
+              <p class="text-muted mb-5">TopFinance est une application web concue pour une très bonne gestion bancaire <br/>
+                </p>
+
+              <div class="mb-4">
+                <div class="progress-title">
+                  <span>Europe</span>
+                  <span class="float-right">35%</span>
+                </div>
+                <div class="progress" style="height: 1px;">
+                  <div class="progress-bar bg-turquoise" role="progressbar" style="width: 35%;"  aria-valuemax="100"></div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="progress-title">
+                  <span>Latin America </span>
+                  <span class="float-right">55%</span>
+                </div>
+                <div class="progress" style="height: 1px;">
+                  <div class="progress-bar bg-purple" role="progressbar" style="width: 55%;"  aria-valuemax="100"></div>
+                </div>
+              </div>
+              <div class="mb-4">
+                <div class="progress-title">
+                  <span>Australia</span>
+                  <span class="float-right">85%</span>
+                </div>
+                <div class="progress" style="height: 1px;">
+                  <div class="progress-bar bg-warning" role="progressbar" style="width: 85%;"  aria-valuemax="100"></div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-xl-7 col-md-7">
+              <div class="map-wrapper" id="world-map"> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>

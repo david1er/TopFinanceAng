@@ -1,0 +1,227 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Modes Reglements</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Modes Reglements</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <button type="button" class="btn btn-outline-success form-pill" data-toggle="modal" data-target="#exampleModal">
+    Nouveau
+  </button>
+
+<p></p>
+
+  <!--Affichage des données-->
+  <mat-form-field >
+    <input matInput [(ngModel)]="searchKey"  placeholder="Rechercher" autocomplete="off" (keyup)="applyFilter()" class="glyphicon glyphicon-search">
+    <button mat-button matSuffix class="glyphicon glyphicon-remove" *ngIf="searchKey" (click)="onSearchClear()"></button>
+
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <ng-container matColumnDef="code_reglement">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Code</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.code_reglement}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="libelle_reglement">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Libelle</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.libelle_reglement}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="commentaire">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>commentaire</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.commentaire}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button (click)="onEdit(row.id_reglement)" class="btn btn-outline-success btn-sm form-pill" data-toggle="modal" data-target="#exampleModal">
+            Edit
+          </button>
+          <button (click)="onDelete(row.id_reglement)" class="btn btn-outline-danger btn-sm form-pill">
+            Supprimer
+          </button>
+
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Données en chargement ...
+        </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Pas de données.
+        </mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+      <!--<mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+      dataSource.data.length==0)}"></mat-footer-row>-->
+
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+      dataSource.length === 0)}"></mat-footer-row>
+
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+
+      <!--Pour nouveau compte-->
+      <div *ngIf="mode=='new-cpte'">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Nouveau mode de reglement</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="reactiveForm">
+            <div class="box-body">
+              <div class="form-group">
+                <label for="code_reglement" class="control-label">Code:</label>
+                <input type="text" name="code_reglement" id="code_reglement" formControlName="code_reglement" class="form-control">
+                <div *ngIf="reactiveForm.controls.code_reglement.errors && (reactiveForm.controls.code_reglement.touched || reactiveForm.controls.code_reglement.dirty)" style=color:red;>
+                  <div *ngIf="reactiveForm.hasError('required','code_reglement')">
+                    codeReglement est obligatoire.
+                  </div>
+                  <div *ngIf="reactiveForm.hasError('pattern','code_reglement')">
+                    Format incorrect
+                  </div>
+                  <div *ngIf="reactiveForm.hasError('minLength','code_reglement')">
+                    codeReglement doit avoir au moins 3 caracteres
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="libelle_reglement" class="control-label">libelle_reglement:</label>
+                <input type="text" name="libelle_reglement" id="libelle_reglement" formControlName="libelle_reglement" class="form-control">
+                <div *ngIf="reactiveForm.controls.libelle_reglement.errors && (reactiveForm.controls.libelle_reglement.touched || reactiveForm.controls.libelle_reglement.dirty)" style=color:red;>
+                  <div *ngIf="reactiveForm.hasError('required','libelle_reglement')">
+                    libelleReglement est obligatoire.
+                  </div>
+                  <div *ngIf="reactiveForm.hasError('pattern','libelle_reglement')">
+                    Format incorrect
+                  </div>
+                  <div *ngIf="reactiveForm.hasError('minLength','libelle_reglement')">
+                    libelleReglement doit avoir au moins 3 caracteres
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="commentaire" class="control-label">Commentaire:</label>
+                <textarea class="form-control z-depth-1" id="commentaire" rows="3" formControlName="commentaire" placeholder=""></textarea>
+
+                <div *ngIf="reactiveForm.controls.commentaire.errors && (reactiveForm.controls.commentaire.touched || reactiveForm.controls.commentaire.dirty)" style=color:red;>
+                  <div *ngIf="reactiveForm.hasError('required','commentaire')">
+                    commentaire est obligatoire.
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+            <div class="modal-footer">
+              <button type="reset" class="btn btn-secondary" (click)="errorSuccess()">Annuler</button>
+
+              <button [disabled]="!reactiveForm.valid" type="submit" class="btn btn-primary" (click)="onSaveReglement(reactiveForm.value)">Enregistrer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+        <!--Pour l'edition-->
+        <div *ngIf="mode=='edit-cpte'">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modification Mode de Reglement</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="reactiveForm">
+              <div class="box-body">
+                <div class="form-group">
+                  <input type="hidden" name="id_reglement" id="id_reglement" [(ngModel)]="currentCompte.id_reglement" formControlName="id_reglement" class="form-control" >
+                </div>
+
+                <div class="form-group">
+                  <label for="code_reglement" class="control-label">Code</label>
+                  <input type="text" name="code_reglement" id="code_reglement" [(ngModel)]="currentCompte.code_reglement" formControlName="code_reglement" class="form-control">
+                  <div *ngIf="reactiveForm.controls.code_reglement.errors && (reactiveForm.controls.code_reglement.touched || reactiveForm.controls.code_reglement.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','code_reglement')">
+                      code_reglement est obligatoire.
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('minLength','code_reglement')">
+                      code_reglement doit avoir au moins 3 caracteres
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="libelle_reglement" class="control-label">libelle_reglement</label>
+                  <input type="text" name="libelle_reglement" id="libelle_reglement" [(ngModel)]="currentCompte.libelle_reglement" formControlName="libelle_reglement" class="form-control">
+                  <div *ngIf="reactiveForm.controls.libelle_reglement.errors && (reactiveForm.controls.libelle_reglement.touched || reactiveForm.controls.libelle_reglement.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','libelle_reglement')">
+                      libelle_reglement est obligatoire.
+                    </div>
+                    <div *ngIf="reactiveForm.hasError('minLength','libelle_reglement')">
+                      libelle_reglement doit avoir au moins 3 caracteres
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="commentaire" class="control-label">Commentaire:</label>
+                  <textarea class="form-control z-depth-1" id="commentaire" rows="3" [(ngModel)]="currentCompte.commentaire" formControlName="commentaire" placeholder=""></textarea>
+
+                  <div *ngIf="reactiveForm.controls.commentaire.errors && (reactiveForm.controls.commentaire.touched || reactiveForm.controls.commentaire.dirty)" style=color:red;>
+                    <div *ngIf="reactiveForm.hasError('required','commentaire')">
+                      commentaire est obligatoire.
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+                <div class="modal-footer">
+                  <button [disabled]="!reactiveForm.valid" type="submit" class="btn btn-success pull-right" (click)="onSaveReglement(reactiveForm.value)">Enregistrer</button>
+                  <button type="reset" class="btn btn-danger pull-left" (click)="errorSuccess()">Annuler</button>
+                </div>
+            </form>
+
+          </div>
+
+        </div>
+        <!--Fin edition-->
+    </div>
+    </div>
+  </div>
+
+  <!--fin modal-->
+</div>

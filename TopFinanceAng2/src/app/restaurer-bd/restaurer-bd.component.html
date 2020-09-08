@@ -1,0 +1,30 @@
+<div class="container-fluid">
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title">Restauration de la Base de Donnée</div>
+      </div>
+    </div>
+    <div class="card-body">
+    <!-- form start -->
+    <form [formGroup]="reactiveForm">
+      <div class="box-body">
+
+        <div class="form-group">
+          <label for="dateRestauration" class="col-sm-3 control-label">Saisir la date:</label>
+
+          <div class="col-sm-8">
+            <input type="text" name="dateRestauration" id="dateRestauration" formControlName="dateRestauration" class="form-control">
+          </div>
+        </div>
+        <br><br><br>
+        <div class="box-footer">
+          <button type="reset" class="btn btn-danger " (click)="errorSuccess()">Annuler</button>&nbsp;&nbsp;&nbsp;&nbsp;
+          <button type="submit" class="btn btn-success " [disabled]="!reactiveForm.valid" (click)="onRestaurer(reactiveForm.value)">Restaurer</button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+</div>

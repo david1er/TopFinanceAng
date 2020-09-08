@@ -1,0 +1,103 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Nouveau Emprunt</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item"><a routerLink="/list_emprunts">Emprunts</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Nouveau Emprunt</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <!-- Detail du pret -->
+<div class="card card-shadow mb-4" >
+  <div class="card-header border-0">
+    <div class="custom-title-wrap bar-primary">
+      <div class="custom-title"><i class="fa fa-globe"></i>Simulation Tableau d'Amortissement du Prêt N° {{emprunts.numero_pret}}</div>
+      <small class="pull-right">Date: {{date| date: 'longDate'}}</small>
+    </div>
+  </div>
+  <div class="card-body">
+    <!-- info row -->
+    <div class="row invoice-info">
+      <div class="col-sm-6 invoice-col">
+        <address>
+          NumCompte: <strong>{{code_compte}}</strong><br>
+          Nom & Prénom:<strong>{{emprunts.compte.client.nom_client}}</strong><br>
+          Contact: <strong>{{emprunts.compte.client.telephone}}</strong><br>
+          Capital:<strong>{{emprunts.capital}}</strong>
+        </address>
+      </div>
+      <!-- /.col -->
+      <div class="col-sm-6 invoice-col">
+        <address>
+
+          Date Effet:<strong>{{emprunts.date_effet_pret | date: 'longDate'}}</strong><br>
+          Périodicité: <strong>Mensuel</strong><br>
+          Nombre d'écheance:<strong>{{emprunts.nombre_echeance}}</strong><br>
+          Durée du Crédit:<strong>{{emprunts.nombre_echeance}} mois</strong>.
+        </address>
+      </div>
+    </div>
+    <!-- /.row -->
+    <!--Affichage des données-->
+    <div class="row">
+      <div class=" col-md-11 col-sm-11 col-xs-12">
+        <div class="box box-primary">
+          <div class="box-header with-border">
+            <h3 class="box-title">Detail du prêt</h3>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+
+            <table class="table table-bordered">
+              <tr>
+                <th>Libelle</th>
+                <th>Montant (F CFA)</th>
+              </tr>
+              <tr>
+                <td>Frais de dossier</td>
+                <td>{{emprunts.frais_dossier}}</td>
+              </tr>
+
+              <tr>
+                <td>Mensualité</td>
+                <td>{{emprunts.mensualite}}</td>
+
+              </tr>
+              <tr>
+                <td>Interet Total</td>
+                <td>{{emprunts.interet}}</td>
+
+              </tr>
+
+              <tr>
+                <td>Net à payer</td>
+                <td>{{emprunts.montant_total}}</td>
+
+              </tr>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+      </div>
+    </div>
+
+    <!-- this row will not appear when printing -->
+    <div class="row no-print">
+      <div class="col-xs-12">
+
+        <button type="button" target="_blank" class="btn btn-success pull-right" (click)="imprimerPret()"><i class="fa fa-print"></i> Imprimer
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>

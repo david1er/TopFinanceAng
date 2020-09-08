@@ -1,0 +1,204 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Retrait sur Compte</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Operations</li>
+          <li class="breadcrumb-item active" aria-current="page">Retrait sur Compte</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4">
+
+    <div class="card-body">
+
+  <form class="form-horizontal " (ngSubmit)="ChercherCompte(f)" #f="ngForm">
+
+    <div class="box-body">
+      <div class="form-group">
+        <div *ngIf="modeActive=='code'">
+          <div class="form-group row">
+            <label class="col-sm-1 col-form-label">Compte</label>
+            <div class="col-sm-5">
+              <input type="text" name="code_compte" id="code_compte" class="form-control"[(ngModel)]="code_compte">
+
+            </div>
+            <div class="col-sm-1">
+              <button type="submit" class="btn btn-danger btn-sm form-pill">OK</button>
+            </div>
+          </div>
+
+        </div>
+        <div *ngIf="modeActive=='nom'">
+          <div class="form-group row">
+            <label for="nom_compte" class="col-sm-1 col-form-label">
+              Compte:
+            </label>
+            <div class="col-sm-5">
+              <select id="nom_compte" name="nom_compte" [(ngModel)]="nom_compte" class="form-control " (change)=f.onSubmit(f.value)>
+                <option *ngFor="let comptesNom of comptesNom" [ngValue]="comptesNom.code_compte"  >
+                  {{ comptesNom.client.nom_client}} -- {{ comptesNom.code_compte}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="modeActive=='nom'" >
+          <h5><strong>NumCompte: {{compteActive.code_compte}}&nbsp;&nbsp;
+            Solde: {{compteActive.solde | number: '.2'}}&nbsp; F CFA</strong></h5>
+        </div>
+        <div *ngIf="modeActive=='code'">
+          <h5><strong>Client: {{compteActive.client.nom_client}}&nbsp;&nbsp;
+            Solde: {{compteActive.solde | number: '.2'}}&nbsp; F CFA</strong></h5>
+        </div>
+
+      </div>
+    </div>
+
+  </form>
+  <div>
+    <div *ngIf="modeActive=='code'">
+      <a routerLink="/new-retrait" class="btn btn-outline-success rounded-0">Nouveau Retrait</a>&nbsp;&nbsp;&nbsp;
+      <a (click)="onActiveNom()" class="btn btn-outline-info rounded-0">Activer la recherche par Nom</a>
+    </div>
+    <div *ngIf="modeActive=='nom'">
+      <a routerLink="/new-retrait" class="btn btn-outline-success rounded-0">Nouveau Retrait</a>&nbsp;&nbsp;&nbsp;
+      <a (click)="onActiveCode()" class="btn btn-outline-info rounded-0">Activer la recherche par Numero de Compte</a>
+    </div>
+
+  </div>
+
+</div>
+</div>
+
+<!--Affichage des données-->
+<!--<div class="row">
+  <div class=" col-md-12 col-sm-12 col-xs-12">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">Consultation des Versements</h3>
+      </div>
+      &lt;!&ndash; /.box-header &ndash;&gt;
+      <div class="box-body">
+        <table id="example" class="table table-bordered table-striped">
+          <thead>
+          <tr>
+            <th>Numero du Compte</th>
+            <th>Date de l'operation</th>
+            <th>Montant</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let c of comptes">
+            <td>{{c.compte.code_compte}}</td>
+            <td>{{c.date_operation |date: 'd MMM y hh:mm:ss'}}</td>
+            <td>{{c.montant}}</td>
+
+            <td>
+              <button class="btn btn-danger" (click)="onDeleteVersement(c.numero_operation,c.compte.code_compte,c.montant)">
+                Supprimer
+              </button>
+            </td>
+            <td>
+
+            </td>
+          </tr>
+          </tbody>
+
+        </table>
+      </div>
+      &lt;!&ndash; /.box-body &ndash;&gt;
+    </div>
+  </div>
+</div>-->
+
+
+<mat-form-field >
+  <input matInput [(ngModel)]="searchKey"  placeholder="Rechercher" autocomplete="off" (keyup)="applyFilter()" class="glyphicon glyphicon-search">
+  <button mat-button matSuffix class="glyphicon glyphicon-remove" *ngIf="searchKey" (click)="onSearchClear()"></button>
+
+</mat-form-field>
+<div class="mat-elevation-z8">
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="date_valeur">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Date Valeur</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.date_valeur | date: 'longDate'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="libelle_operation">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Libelle</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.libelle_operation}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="montant">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>montant</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.montant}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="date_operation">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.date_operation | date: 'longDate'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="comptabilise">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>comptabilise</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <!--{{element.comptabilise}}-->
+        <div *ngIf="element.comptabilise==true">
+          <span class="fa fa-check " style="color: green"></span>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions1">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a (click)="onEdit(row.numero_operation)" class="btn btn-default" >
+          <i class="fa fa-bullseye"></i>
+        </a>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Recu</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+
+        <a href="http://127.0.0.1:7000/recuRet/{{row.numero_operation}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i></a>
+
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        loading data ...
+      </mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        No data.
+      </mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+    <!--<mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.data.length==0)}"></mat-footer-row>-->
+
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.length === 0)}"></mat-footer-row>
+
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+</div>

@@ -1,0 +1,119 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Modification Retrait</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item"><a routerLink="/retrait">Retrait sur Compte</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Modification Retrait</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title">Informations sur le Compte</div>
+      </div>
+    </div>
+    <div class="card-body">
+      Numero de Compte: <strong>{{compteActive.code_compte}}</strong>  <br>
+      Identité du Client: <strong>{{compteActive.client.nom_client}}</strong><br>
+      Solde disponible: <strong>{{compteActive.solde}}</strong>
+    </div>
+  </div>
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title">Mise à jour d'un retrait</div>
+      </div>
+    </div>
+    <div class="card-body">
+
+      <form class="form-horizontal " (ngSubmit)="ChercherCompte(f)" #f="ngForm">
+        <div class="form-group row col-sm-10" *ngIf="modele=='oui'">
+          <label for="libelle_operation1" class="col-sm-2 col-form-label">Modèle:</label>
+          <div class="col-sm-5">
+            <select id="libelle_operation1" name="libelle_operation1" [(ngModel)]="libelle_operation1" class="form-control " (change)=f.onSubmit(f.value)>
+              <option *ngFor="let op of opeCours" [ngValue]="op.code_ope_cour"  >
+                {{op.libelle_operation}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+      </form>
+
+      <form [formGroup]="reactiveForm">
+        <div class="box-body">
+          <input type="hidden" name="numero_operation" id="numero_operation" [(ngModel)]="operations.numero_operation" formControlName="numero_operation" class="form-control">
+
+          <div class="form-group row col-sm-10"  *ngIf="modele=='non'">
+            <label for="libelle_operation" class="col-sm-2 col-form-label">libelle_operation:</label>
+            <div class="col-sm-5">
+              <input type="text" name="libelle_operation" id="libelle_operation" [(ngModel)]="operations.libelle_operation" formControlName="libelle_operation" class="form-control">
+            </div>
+            <button (click)="onModele()" class="btn btn-outline-success btn-sm form-pill">Choisir modèle</button>
+          </div>
+
+          <div class="form-group row col-sm-10">
+            <label for="montant" class="col-sm-2 col-form-label">Montant:</label>
+            <div class="col-sm-5">
+              <input type="text" name="montant" id="montant" formControlName="montant" [(ngModel)]="operations.montant" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group row col-sm-10">
+            <label for="mode" class="col-sm-2 col-form-label">Reglement</label>
+            <div class="col-sm-5">
+              <select name="mode" id="mode" [(ngModel)]="operations.mode.id_reglement" formControlName="mode" class="form-control ">
+                <option *ngFor="let r of reglements" [ngValue]="r.id_reglement">
+                  {{ r.libelle_reglement}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group row col-sm-10">
+            <label for="date_valeur" class="col-sm-2 col-form-label">Valorisé le:</label>
+            <div class="col-sm-5">
+              <input type="date" name="date_valeur" id="date_valeur" formControlName="date_valeur" [(ngModel)]="operations.date_valeur" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group row col-sm-10">
+            <label class="col-sm-2 col-form-label">Comptabilisé:</label>
+            <div class="col-sm-5">
+              <input type="checkbox" value="true" formControlName="comptabilise" [(ngModel)]="operations.comptabilise">
+            </div>
+          </div>
+
+          <div class="form-group row col-sm-10">
+            <label class="col-sm-2 col-form-label">Motif :</label>
+            <div class="">
+              <textarea name="motif" formControlName="motif" [(ngModel)]="operations.motif" class="form-control" cols="35" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="box-footer row col-sm-10 col-md-offset-1">
+            <button type="reset" class="btn btn-danger form-pill" (click)="errorSuccess()">Annuler</button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-success form-pill" [disabled]="!reactiveForm.valid" (click)="onSaveCompte(reactiveForm.value,compteActive.code_compte)">Enregistrer</button>
+            <button type="submit" class="btn btn-outline-warning form-pill" (click)="onDelete(reactiveForm.value)">Supprimer</button>
+            <div *ngIf="imprimeButton=='oui'">
+              <a href="http://127.0.0.1:7000/recuVers/{{num_ope}}" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Imprimer Recu</a>
+
+            </div>
+          </div>
+        </div>
+      </form>
+
+
+    </div>
+  </div>
+</div>

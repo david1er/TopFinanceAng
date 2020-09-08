@@ -1,0 +1,189 @@
+<div class="container-fluid">
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Liste des Emprunts</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Liste des Emprunts</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <button type="button" routerLink="/new_emprunt" class="btn btn-outline-success form-pill">
+    Nouveau
+  </button>
+  <p></p>
+
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-warning">
+        <div class="custom-title">Rechercher Emprunt(s) en fonction des paramètres</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="reactiveForm">
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Nom & Prénom(s)</label>
+          <div class="col-sm-3">
+            <select name="choix_nom" formControlName="choix_nom" class="form-control">
+              <option value="indifferent" selected>Indifférent</option>
+              <option value="contient">Contient</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <input type="text" name="nom" id="nom" formControlName="nom" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Emprunt(s) Completement rembourssé(s)</label>
+          <div class="col-sm-3">
+            <select name="choix_remboursse" formControlName="choix_remboursse" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Egale</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <select name="remboursse" formControlName="remboursse" class="form-control">
+              <option value="OUI">Oui</option>
+              <option value="NON">Non</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Capital</label>
+          <div class="col-sm-3">
+            <select name="choix_montant" formControlName="choix_montant" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Comprise entre</option>
+            </select>
+          </div>Du
+          <div class="col-sm-2">
+            <input type="text" name="montant1" id="montant1" formControlName="montant1" class="form-control">
+          </div>
+          Au
+          <div class="col-sm-2">
+            <input type="text" name="montant2" id="montant2" formControlName="montant2" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Date Opération</label>
+          <div class="col-sm-3">
+            <select name="choix_date" formControlName="choix_date" class="form-control">
+              <option value="indifferent">Indifférent</option>
+              <option value="egale">Comprise entre</option>
+            </select>
+          </div>Du
+          <div class="col-sm-2">
+            <input type="date" name="date1" id="date1" formControlName="date1" class="form-control">
+          </div>
+          Au
+          <div class="col-sm-2">
+            <input type="date" name="date2" id="date2" formControlName="date2" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-12 text-center">
+            <button type="reset" (click)="errorSuccess()" class="btn btn-outline-warning form-pill" >Annuler</button>
+            <button type="submit" [disabled]="!reactiveForm.valid" class="btn btn-outline-primary form-pill" (click)="onRechercher(reactiveForm.value)">Valider</button>
+          </div>
+        </div>
+      </form>
+      </div>
+  </div>
+
+
+<!--<mat-form-field >
+  <input matInput [(ngModel)]="searchKey"  placeholder="Rechercher" autocomplete="off" (keyup)="applyFilter()" class="glyphicon glyphicon-search">
+  <button mat-button matSuffix class="glyphicon glyphicon-remove" *ngIf="searchKey" (click)="onSearchClear()"></button>
+
+</mat-form-field>-->
+<div class="mat-elevation-z8">
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="date_effet_pret">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>date_effet_pret</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.date_effet_pret | date: 'dd/MM/yyyy'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="numero_pret">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>numero_pret</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.numero_pret}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="capital">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>capital</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.capital}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="compte">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>compte</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.compte.code_compte}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="montant_total">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>montant_total</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.montant_total}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="reste">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>reste</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.reste}}</mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <!--<button (click)="onEdit(row.code_compte)" class="btn btn-outline-success btn-sm form-pill">
+          Edit
+        </button>
+        <button (click)="onDelete(row.code_compte)" class="btn btn-outline-danger btn-sm form-pill">
+          Supprimer
+        </button>-->
+        <button (click)="onView(row.numero_pret)" class="btn btn-outline-primary btn-sm form-pill">
+          Details
+        </button>
+        <button (click)="onRemboursser(row.numero_pret)" class="btn btn-outline-success btn-sm form-pill">
+          Remb
+        </button>
+        <button (click)="onViewRemb(row.numero_pret)" class="btn btn-outline-primary btn-sm form-pill">
+          View Remb
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Données en cours de chargement ...
+      </mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        pas de données.
+      </mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+    <!--<mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.data.length==0)}"></mat-footer-row>-->
+
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+      dataSource.length === 0)}"></mat-footer-row>
+
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+</div>

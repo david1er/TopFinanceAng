@@ -1,0 +1,90 @@
+<div class="container-fluid">
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Liste des Clients</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Liste des Clients</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <button type="button" routerLink="/new_client" class="btn btn-outline-success form-pill">
+    Nouveau
+  </button>
+  <p></p>
+
+  <!--Affichage des données-->
+  <mat-form-field >
+    <input matInput [(ngModel)]="searchKey"  placeholder="Rechercher" autocomplete="off" (keyup)="applyFilter()" class="glyphicon glyphicon-search">
+    <button mat-button matSuffix class="glyphicon glyphicon-remove" *ngIf="searchKey" (click)="onSearchClear()"></button>
+
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="nom_client">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>nom_client</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.nom_client}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="date_nais">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>date_nais</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.date_nais | date: 'dd/MM/yyyy'}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="profession">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>profession</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.profession}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="telephone">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>telephone</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.telephone}}</mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button (click)="onEdit(row.code_client)" class="btn btn-outline-success btn-sm form-pill">
+            Edit
+          </button>
+          <button (click)="onDelete(row.code_client)" class="btn btn-outline-danger btn-sm form-pill">
+            Supp
+          </button>
+
+          <button (click)="onView(row.code_client)" class="btn btn-outline-primary btn-sm form-pill">
+            Details
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="loading">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Données en chargement ...
+        </mat-footer-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="noData">
+        <mat-footer-cell *matFooterCellDef colspan="6">
+          Pas de données.
+        </mat-footer-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+      <!--<mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+      dataSource.data.length==0)}"></mat-footer-row>-->
+
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.length === 0)}"></mat-footer-row>
+
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>

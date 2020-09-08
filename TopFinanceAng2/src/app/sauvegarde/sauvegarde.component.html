@@ -1,0 +1,18 @@
+<!--<ag-grid-angular
+  style="width:1500px; height:750px; padding-top:10px"
+  class="ag-theme-balham"
+  [columnDefs]="colDefs"
+  [animateRows]="true"
+  (gridReady)="onGridReady($event)"
+></ag-grid-angular>-->
+<div class="container-fluid">
+
+<ag-grid-angular
+  style="width: 500px; height: 500px;"
+  class="ag-theme-alpine"
+  [rowData]="rowData"
+  [columnDefs]="columnDefs"
+  rowSelection="multiple"
+>
+</ag-grid-angular>
+</div>

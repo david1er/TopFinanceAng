@@ -1,0 +1,99 @@
+<div class="container-fluid">
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Liste des Comptes</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Liste des Comptes</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <button type="button" routerLink="/new_compte" class="btn btn-outline-success form-pill">
+    Nouveau
+  </button>
+  <p></p>
+<!--Affichage des données-->
+<mat-form-field >
+  <input matInput [(ngModel)]="searchKey"  placeholder="Rechercher" autocomplete="off" (keyup)="applyFilter()" class="glyphicon glyphicon-search">
+  <button mat-button matSuffix class="glyphicon glyphicon-remove" *ngIf="searchKey" (click)="onSearchClear()"></button>
+
+</mat-form-field>
+<div class="mat-elevation-z8">
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="date_operation">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Date</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.date_operation | date: 'dd/MM/yyyy'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="code_compte">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>code_compte</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.code_compte}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type_compte">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>type_compte</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.type_compte}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="client">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Client</mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.client.nom_client}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="compte_operationnel">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>operationnel</mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <!--{{element.comptabilise}}-->
+        <div *ngIf="element.compte_operationnel==true">
+          <span class="fa fa-check " style="color: green"></span>
+        </div>
+      </mat-cell>
+    </ng-container>
+
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button (click)="onEdit(row.code_compte)" class="btn btn-outline-success btn-sm form-pill">
+          Edit
+        </button>
+        <button (click)="onDelete(row.code_compte)" class="btn btn-outline-danger btn-sm form-pill">
+          Supprimer
+        </button>
+        <button (click)="onView(row.code_compte)" class="btn btn-outline-primary btn-sm form-pill">
+          Details
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="loading">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Données en chargement ...
+      </mat-footer-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="noData">
+      <mat-footer-cell *matFooterCellDef colspan="6">
+        Pas de données.
+      </mat-footer-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+    <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':dataSource!=null}"></mat-footer-row>
+    <!--<mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.data.length==0)}"></mat-footer-row>-->
+
+    <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(dataSource!=null &&
+    dataSource.length === 0)}"></mat-footer-row>
+
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[10, 25, 100]" showFirstLastButtons></mat-paginator>
+</div>
+</div>

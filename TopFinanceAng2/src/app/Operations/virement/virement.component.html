@@ -1,0 +1,103 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Transfert entre Compte</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Opérations</li>
+          <li class="breadcrumb-item active" aria-current="page">Transfert entre Compte</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title">Informations sur le Compte</div>
+      </div>
+    </div>
+    <div class="card-body">
+      Numero de Compte: <strong>{{compteActive.code_compte}}</strong>  <br>
+      Identité du Client: <strong>{{compteActive.client.nom_client}}</strong><br>
+      Solde disponible: <strong>{{compteActive.solde}}</strong>
+    </div>
+  </div>
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title">Effectuer un virement</div>
+      </div>
+    </div>
+    <div class="card-body">
+
+  <form [formGroup]="reactiveForm">
+    <div class="box-body">
+
+      <div class="form-group row col-sm-10">
+        <label for="montant" class="col-sm-2 col-form-label">Transfert:</label>
+        <div class="col-sm-5">
+          <select name="transfert" formControlName="transfert" class="form-control">
+            <option value="destination">En destination du Compte</option>
+            <option value="provenance">En Provenance du Compte</option>
+          </select>
+        </div>
+        <div class="col-sm-3">
+          <input type="text" name="cpte2" formControlName="cpte2" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group row col-sm-10">
+        <label for="montant" class="col-sm-2 col-form-label">Montant:</label>
+        <div class="col-sm-5">
+          <input type="text" name="montant" id="montant" formControlName="montant" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group row col-sm-10">
+        <label for="mode" class="col-sm-2 col-form-label">Reglement</label>
+        <div class="col-sm-5">
+          <select name="mode" id="mode" [(ngModel)]="mode" formControlName="mode" class="form-control ">
+            <option *ngFor="let r of reglements" [ngValue]="r.id_reglement">
+              {{ r.libelle_reglement}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row col-sm-10">
+        <label for="date_valeur" class="col-sm-2 col-form-label">Valorisé le:</label>
+        <div class="col-sm-5">
+          <input type="date" name="date_valeur" id="date_valeur" formControlName="date_valeur" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group row col-sm-10">
+        <label class="col-sm-2 col-form-label">Comptabilisé:</label>
+        <div class="col-sm-5">
+          <input type="checkbox" value="true" formControlName="comptabilise">
+        </div>
+      </div>
+
+      <div class="form-group row col-sm-10">
+        <label class="col-sm-2 col-form-label">Motif :</label>
+        <div class="">
+          <textarea name="motif" formControlName="motif" class="form-control" cols="35" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="box-footer row col-sm-10 col-md-offset-1">
+        <button type="reset" class="btn btn-danger form-pill" (click)="errorSuccess()">Annuler</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-success form-pill" [disabled]="!reactiveForm.valid" (click)="onSaveVirement(reactiveForm.value,compteActive.code_compte)">Valider</button>
+
+      </div>
+    </div>
+  </form>
+
+</div>
+  </div>

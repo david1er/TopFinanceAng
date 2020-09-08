@@ -1,0 +1,85 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Nouveau Rembourssement</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item"><a routerLink="/list_remb">Rembourssements</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Nouveau Rembourssement</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title">Informations sur le Compte</div>
+      </div>
+    </div>
+    <div class="card-body">
+  Numero du Pret: <strong>{{compteActive.numero_pret}}</strong> <br>
+  Identité du Client: <strong>{{compteActive.compte.client.nom_client}}</strong> <br>
+  Reste à payer: <strong>{{compteActive.reste}}</strong>
+    </div>
+  </div>
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title">Effectuer un remboursement</div>
+      </div>
+    </div>
+    <div class="card-body">
+
+  <form [formGroup]="reactiveForm">
+    <div class="box-body">
+
+      <div class="form-group row col-sm-10">
+        <label for="montant_remb" class="col-sm-2 col-form-label">Montant:</label>
+        <div class="col-sm-5">
+          <input type="text" name="montant_remb" id="montant_remb" formControlName="montant_remb" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group row col-sm-10">
+        <label for="mode" class="col-sm-2 col-form-label">Reglement</label>
+        <div class="col-sm-5">
+          <select name="mode" id="mode" [(ngModel)]="mode" formControlName="mode" class="form-control ">
+            <option *ngFor="let r of reglements" [ngValue]="r.id_reglement">
+              {{ r.libelle_reglement}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group row col-sm-10">
+        <label for="date_remb" class="col-sm-2 col-form-label">Date:</label>
+        <div class="col-sm-5">
+          <input type="date" name="date_remb" id="date_remb" formControlName="date_remb" class="form-control">
+        </div>
+      </div>
+
+      <div class="form-group row col-sm-10">
+        <label for="remettant" class="col-sm-2 col-form-label">Remettant:</label>
+        <div class="col-sm-5">
+          <input type="text" name="remettant" id="remettant" formControlName="remettant" class="form-control">
+        </div>
+      </div>
+
+
+      <div class="box-footer row col-sm-10 col-md-offset-1">
+        <button type="reset" class="btn btn-danger " (click)="errorSuccess()">Annuler</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-success " [disabled]="!reactiveForm.valid" (click)="onSaveCompte(reactiveForm.value,compteActive.code_compte)">Enregistrer</button>
+
+      </div>
+    </div>
+  </form>
+
+</div>
+</div>
+</div>

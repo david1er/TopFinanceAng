@@ -1,0 +1,230 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Modification du Compte</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item"><a routerLink="/list_compte">Comptes</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Modification du Compte</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-warning">
+        <div class="custom-title">Modification du compte</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="reactiveForm">
+
+        <div class="row">
+          <div class="col-sm-3">Type de Compte</div>
+          <div class="col-sm-9">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="type_compte" formControlName="type_compte" [(ngModel)]="comptes.type_compte" value="Compte Epargne ">
+                Compte Epargne
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" name="type_compte" formControlName="type_compte" [(ngModel)]="comptes.type_compte" value="Compte Emprunt">
+                Compte Emprunt
+              </label>
+            </div>
+
+            <div *ngIf="reactiveForm.controls.type_compte.errors && (reactiveForm.controls.type_compte.touched || reactiveForm.controls.type_compte.dirty)" style=color:red;>
+              <div *ngIf="reactiveForm.hasError('required','type_compte')">
+                Veuillez choisir le sexe.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Numero de Compte</label>
+          <div class="col-sm-9">
+            <input type="text" name="code_compte" id="code_compte" [(ngModel)]="comptes.code_compte" formControlName="code_compte" class="form-control">
+            <div *ngIf="reactiveForm.controls.code_compte.errors && (reactiveForm.controls.code_compte.touched || reactiveForm.controls.code_compte.dirty)" style=color:red;>
+              <div *ngIf="reactiveForm.hasError('required','code_compte')">
+                code_compte est obligatoire.
+              </div>
+              <div *ngIf="reactiveForm.hasError('pattern','code_compte')">
+                Format incorrect
+              </div>
+              <div *ngIf="reactiveForm.hasError('minLength','code_compte')">
+                code_compte doit avoir au moins 3 caracteres
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Sélectionner le Client</label>
+          <div class="col-sm-9">
+            <select name="client" id="client" formControlName="client" [(ngModel)]="comptes.client.code_client" class="form-control ">
+              <option *ngFor="let f of divisions" [ngValue]="f.code_client">
+                {{ f.nom_client}}
+              </option>
+            </select>
+
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Solde Initial</label>
+          <div class="col-sm-9">
+            <input type="text" name="solde" id="solde" [(ngModel)]="comptes.solde" formControlName="solde" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Etat du Compte</label>
+          <div class="col-sm-9">
+            <input type="checkbox" value="true" [(ngModel)]="comptes.compte_operationnel" formControlName="compte_operationnel">
+            <span>Compte operatioonel </span>           </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Béneficiaire</label>
+          <div class="col-sm-9">
+            <input type="text" name="beneficiaire" [(ngModel)]="comptes.beneficiaire" id="beneficiaire" formControlName="beneficiaire" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Contact Béneficiaire</label>
+          <div class="col-sm-9">
+            <input type="text" name="contact_beneficiaire" [(ngModel)]="comptes.contact_beneficiaire" id="contact_beneficiaire" formControlName="contact_beneficiaire" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-sm-3 col-form-label">Commentaire</label>
+          <div class="col-sm-9">
+            <textarea name="commentaire" id="commentaire" [(ngModel)]="comptes.commentaire" formControlName="commentaire" class="form-control" cols="40" rows="4"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-sm-12 text-center">
+            <button type="reset" (click)="errorSuccess()" class="btn btn-outline-warning form-pill" >Annuler</button>
+            <button type="submit" [disabled]="!reactiveForm.valid" class="btn btn-outline-primary form-pill" (click)="onSaveCompte(reactiveForm.value)">Enrégistrer</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--
+
+
+
+
+
+
+<div class="container-fluid">
+  <div class="panel panel-primary">
+    <div class="panel-heading">Ajouter un nouveau Compte</div>
+    <div class="panel-body">
+      <form [formGroup]="reactiveForm">
+
+        <div class="panel panel-info">
+          <div class="panel-heading">Détails du Compte</div>
+          <div class="panel-body">
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">Type de Compte:  </label>&nbsp;&nbsp;&nbsp;
+
+                    <label>
+                      <input type="radio" value="Compte Epargne" formControlName="type_compte"  [(ngModel)]="comptes.type_compte">
+                      <span>Compte Epargne </span> &nbsp;&nbsp;
+                    </label>
+                    <label>
+                      <input type="radio" value="Compte Emprunt" formControlName="type_compte"  [(ngModel)]="comptes.type_compte">
+                      <span>Compte Emprunt</span>
+                    </label>
+                  </div>
+                  <div class="form-group">
+                    <label for="code_compte" class="control-label">Numero de Compte:</label>
+                    <input type="text" readonly name="code_compte" id="code_compte" formControlName="code_compte" [(ngModel)]="comptes.code_compte" class="form-control">
+                    <div *ngIf="reactiveForm.controls.code_compte.errors && (reactiveForm.controls.code_compte.touched || reactiveForm.controls.code_compte.dirty)" style=color:red;>
+                      <div *ngIf="reactiveForm.hasError('required','code_compte')">
+                        code_compte est obligatoire.
+                      </div>
+                      <div *ngIf="reactiveForm.hasError('pattern','code_compte')">
+                        Format incorrect
+                      </div>
+                      <div *ngIf="reactiveForm.hasError('minLength','code_compte')">
+                        code_compte doit avoir au moins 3 caracteres
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="client" class="control-label">Selectionner le client:</label>
+                    <select name="client" id="client" formControlName="client" class="form-control " [(ngModel)]="comptes.client.code_client">
+                      <option *ngFor="let f of divisions" [ngValue]="f.code_client">
+                        {{ f.nom_client}}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="solde" class="control-label">solde Initial:</label>
+                    <input type="text" name="solde" id="solde" formControlName="solde" [(ngModel)]="comptes.solde" class="form-control">
+                  </div>
+
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="control-label">Etat du Compte:  </label>&nbsp;&nbsp;&nbsp;
+
+                    <label>
+                      <input type="checkbox" value="true" formControlName="compte_operationnel" [(ngModel)]="comptes.compte_operationnel">
+                      <span>Compte operatioonel </span> &nbsp;&nbsp;
+                    </label>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="beneficiaire" class="control-label">Béneficiaire:</label>
+                    <input type="text" name="beneficiaire" id="beneficiaire" formControlName="beneficiaire" [(ngModel)]="comptes.beneficiaire" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="contact_beneficiaire" class="control-label">Contact Béneficiaire:</label>
+                    <input type="text" name="contact_beneficiaire" id="contact_beneficiaire" [(ngModel)]="comptes.contact_beneficiaire" formControlName="contact_beneficiaire" class="form-control">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="commentaire" class="control-label">Commentaire:</label>
+                    <textarea name="commentaire" id="commentaire" formControlName="commentaire" [(ngModel)]="comptes.commentaire" class="form-control" cols="40" rows="4"></textarea>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="box-footer col-md-offset-4 col-md-4" >
+          <button [disabled]="!reactiveForm.valid" type="submit" class="btn btn-success pull-right" (click)="onSaveCompte(reactiveForm.value)">Enregistrer</button>
+          <button type="reset" class="btn btn-danger pull-left" (click)="errorSuccess()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+-->

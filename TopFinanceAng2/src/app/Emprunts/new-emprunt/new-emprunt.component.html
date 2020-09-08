@@ -1,0 +1,300 @@
+<div class="container-fluid">
+
+  <!--page title-->
+  <div class="page-title mb-4 d-flex align-items-center">
+    <div class="mr-auto">
+      <h4 class="weight500 d-inline-block pr-3 mr-3 border-right">Nouveau Emprunt</h4>
+      <nav aria-label="breadcrumb" class="d-inline-block ">
+        <ol class="breadcrumb p-0">
+          <li class="breadcrumb-item"><a routerLink="/acceuil">Acceuil</a></li>
+          <li class="breadcrumb-item"><a routerLink="/list_emprunts">Emprunts</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Nouveau Emprunt</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  <!--/page title-->
+
+  <div class="card card-shadow mb-4" *ngIf="mode=='new'">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title">Gestion des prets</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="reactiveForm" class="form-horizontal">
+        <div class="box-body">
+
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Montant du pret: </label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control"  name="capital" formControlName="capital">
+            </div>
+            <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+              <label class=""> </label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label  class="col-sm-3 col-form-label">Durée du pret en mois : </label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control"  name="nombre_echeance" formControlName="nombre_echeance">
+            </div>
+            <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+              <label class=""></label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label  class="col-sm-3 col-form-label">Taux d'interet mensuel : </label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control"  name="taux_interet_annuel" formControlName="taux_interet_annuel">
+            </div>
+            <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+              <label  class="">% </label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Taux de frais de dossier : </label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control"  name="taux_frais_dossier" formControlName="taux_frais_dossier">
+            </div>
+            <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+              <label class="">% </label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label  class="col-sm-3 col-form-label">Date Effet du pret : </label>
+            <div class="col-sm-5">
+              <input type="date" class="form-control"  name="date_effet_pret" formControlName="date_effet_pret">
+            </div>
+            <div class="col-lg-offset-6 col-lg-1 col-sm-offset-6 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+              <label class=""></label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Date Debut Rembourssement : </label>
+            <div class="col-sm-5">
+              <input type="date" class="form-control"  name="date_debut_remboursement" formControlName="date_debut_remboursement">
+            </div>
+            <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+              <label class=""></label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Numero de Compte du demandeur : </label>
+            <div class="col-sm-5">
+              <input type="text" class="form-control"  name="num_cpte" formControlName="num_cpte">
+            </div>
+            <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+              <label class=""></label>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-sm-9 text-center">
+              <button type="reset" (click)="errorSuccess()" class="btn btn-outline-warning form-pill" >Annuler</button>
+              <button type="submit" [disabled]="!reactiveForm.valid" class="btn btn-outline-primary form-pill" (click)="onCalculer(reactiveForm.value)">Calculer</button>
+            </div>
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+<!--
+  <div class="col-sm-offset-2 col-md-7" *ngIf="mode=='new'">
+  <div class="box box-info">
+    <div class="box-header with-border">
+      <h3 class="box-title">Gestion des prets</h3>
+    </div>
+    &lt;!&ndash; /.box-header &ndash;&gt;
+    &lt;!&ndash; form start &ndash;&gt;
+    <form [formGroup]="reactiveForm" class="form-horizontal">
+      <div class="box-body">
+
+
+        <div class="form-group">
+          <label class="col-lg-6 col-sm-6">Montant du pret: </label>
+          <div class="col-lg-5 col-sm-5">
+            <input type="text" class="form-control"  name="capital" formControlName="capital">
+          </div>
+          <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+            <label class=""> </label>
+          </div>
+        </div>
+
+
+        <div class="form-group">
+          <label  class="col-lg-6 col-sm-6">Durée du pret en mois : </label>
+          <div class="col-lg-5 col-sm-5">
+            <input type="text" class="form-control"  name="nombre_echeance" formControlName="nombre_echeance">
+          </div>
+          <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+            <label class=""></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label  class="col-lg-6 col-sm-6">Taux d'interet mensuel : </label>
+          <div class="col-lg-5 col-sm-5">
+            <input type="text" class="form-control"  name="taux_interet_annuel" formControlName="taux_interet_annuel">
+          </div>
+          <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+            <label  class="">% </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-6 col-sm-6">Taux de frais de dossier : </label>
+          <div class="col-lg-5 col-sm-5">
+            <input type="text" class="form-control"  name="taux_frais_dossier" formControlName="taux_frais_dossier">
+          </div>
+          <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+            <label class="">% </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label  class="col-lg-6 col-sm-6">Date Effet du pret : </label>
+          <div class="col-lg-5 col-sm-5">
+            <input type="date" class="form-control"  name="date_effet_pret" formControlName="date_effet_pret">
+          </div>
+          <div class="col-lg-offset-6 col-lg-1 col-sm-offset-6 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+            <label class=""></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-6 col-sm-6">Date Debut Rembourssement : </label>
+          <div class="col-lg-5 col-sm-5">
+            <input type="date" class="form-control"  name="date_debut_remboursement" formControlName="date_debut_remboursement">
+          </div>
+          <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+            <label class=""></label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-lg-6 col-sm-6">Numero de Compte du demandeur : </label>
+          <div class="col-lg-5 col-sm-5">
+            <input type="text" class="form-control"  name="num_cpte" formControlName="num_cpte">
+          </div>
+          <div class="col-lg-offset-5 col-lg-1 col-sm-offset-5 col-sm-1" style="margin-top:10px; margin-left:-20px;">
+            <label class=""></label>
+          </div>
+        </div>
+        <div class="box-footer col-md-offset-4 col-md-4" >
+          <button [disabled]="!reactiveForm.valid" type="submit" class="btn btn-success pull-right" (click)="onCalculer(reactiveForm.value)">Calculer</button>
+          <button type="reset" class="btn btn-danger pull-left" (click)="errorSuccess()">Annuler</button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+-->
+
+<!-- Detail du pret -->
+  <div class="card card-shadow mb-4" *ngIf="mode=='consult'">
+    <div class="card-header border-0">
+      <div class="custom-title-wrap bar-primary">
+        <div class="custom-title"><i class="fa fa-globe"></i>Simulation Tableau d'Amortissement</div>
+        <small class="pull-right">Date: {{date| date: 'longDate'}}</small>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- info row -->
+      <div class="row invoice-info">
+        <div class="col-sm-6 invoice-col">
+          <address>
+            NumCompte: <strong>{{num_compte}}</strong><br>
+            Nom & Prénom:<strong>{{comptes.client.nom_client}}</strong><br>
+            Contact: <strong>{{comptes.client.telephone}}</strong><br>
+            Capital:<strong>{{capital}}</strong>
+          </address>
+        </div>
+        <!-- /.col -->
+        <div class="col-sm-6 invoice-col">
+          <address>
+
+            Date Effet:<strong>{{date_effet}}</strong><br>
+            Périodicité: <strong>Mensuel</strong><br>
+            Nombre d'écheance:<strong>{{nombre_echeance}}</strong><br>
+            Durée du Crédit:<strong>{{nombre_echeance}} mois</strong>.
+          </address>
+        </div>
+      </div>
+      <!-- /.row -->
+      <!--Affichage des données-->
+      <div class="row">
+        <div class=" col-md-11 col-sm-11 col-xs-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Detail du prêt</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+
+              <table class="table table-bordered">
+                <tr>
+                  <th>Libelle</th>
+                  <th>Montant (F CFA)</th>
+                </tr>
+                <tr>
+                  <td>Frais de dossier</td>
+                  <td>{{frais_dossier}}</td>
+                </tr>
+                <tr>
+                  <td>Interet Mensuel</td>
+                  <td>{{interet_mensuel}}</td>
+
+                </tr>
+                <tr>
+                  <td>Mensualité</td>
+                  <td>{{mensualite}}</td>
+
+                </tr>
+                <tr>
+                  <td>Interet Total</td>
+                  <td>{{interet_total}}</td>
+
+                </tr>
+
+                <tr>
+                  <td>Net à payer</td>
+                  <td>{{montant_total}}</td>
+
+                </tr>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+
+      <!-- this row will not appear when printing -->
+      <div class="row no-print">
+        <div class="col-xs-12">
+          <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+          <button type="button" class="btn btn-success pull-right" (click)="validerPret()"><i class="fa fa-credit-card"></i> Valider
+          </button>
+          <button type="reset" class="btn btn-primary pull-right" (click)="errorSuccess()" style="margin-right: 5px;">
+            Annuler
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+<!-- /.content -->
+</div>
